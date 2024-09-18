@@ -125,7 +125,6 @@ public class JavaApplication2 {
                 continue;
             }
             else{
-                
                 result = tmpStr+"\n"+result;
                 listStr.add(tmpStr);
             }
