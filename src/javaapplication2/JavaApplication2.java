@@ -224,7 +224,6 @@ public class JavaApplication2 {
 //                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);        
 //        //scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR);            
        
-    
         //JLabel lablename2=new JLabel("Enter your name");
         TextField tname2=new TextField("");
         //tname.setColumns(100);
