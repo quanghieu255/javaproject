@@ -204,7 +204,6 @@ public class JavaApplication2 {
         return result;
     }
     public static void main(String[] args) {
-        
         JFrame frame=new JFrame();
         JPanel panel=new JPanel();
         frame.setSize(1300,1200);
