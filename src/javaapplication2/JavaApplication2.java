@@ -32,7 +32,10 @@ public class JavaApplication2 {
     private JLabel headerLabel;
     private JLabel statusLabel;
     private JPanel controlPanel;
-    
+    static JRadioButton radioBtn1 = new JRadioButton("EDIFACT");
+    static JRadioButton radioBtn2 = new JRadioButton("X12");
+    static JRadioButton radioBtnIN = new JRadioButton("IN");
+    static JRadioButton radioBtnOUT = new JRadioButton("OUT");    
     /**
      * @param args the command line arguments
      */
@@ -90,7 +93,6 @@ public class JavaApplication2 {
         for(i = 0; i < allLine.length; i++){
             pos2 = allLine[i].indexOf(data);
             if (pos2 > 0){
-                System.out.println("Check field "+checkFieldX12OUT(allLine[i]));
                 pos = i;
             }
         }
@@ -118,18 +120,34 @@ public class JavaApplication2 {
 //            if(i > 0 && getFirstPos(allLine[i]) == getFirstPos(allLine[i-1])){
 //                continue;
 //            }
-            if (dataRm.equals("") == false){
-                if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
+            
+            if (radioBtn1.isSelected() == true && radioBtnIN.isSelected() == true){
+                if (dataRm.equals("") == false){
+                    if (i != pos && checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                        continue;
+                    }
+                }   
+                else if (checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(data) == false ){
+                     continue;  
+                }else{
+                    result = tmpStr+"\n"+result;
+                    listStr.add(tmpStr);
+                }
+                                 
+            }else if(radioBtn2.isSelected() == true && radioBtnOUT.isSelected() == true){
+                if (dataRm.equals("") == false){
+                    if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                        continue;
+                    }
+                }   
+                else if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
                     continue;
+                }else{
+                    result = tmpStr+"\n"+result;
+                    listStr.add(tmpStr);
                 }
             }
-            if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false){
-                continue;
-            }
-            else{
-                result = tmpStr+"\n"+result;
-                listStr.add(tmpStr);
-            }
+            
             if (allLine[i].trim().equals("") == false && firstPos == 0){
                 break;
             }            
@@ -145,7 +163,8 @@ public class JavaApplication2 {
             dataRm= data.replace(dataCon, "");            
         }        
         int firstPos, firstPosOrg;
-        if (allLine[pos+1] != null &&  allLine[pos+1].contains("endif") == true){
+        
+        if ((allLine.length > pos+1) && allLine[pos+1] != null &&  allLine[pos+1].contains("endif") == true){
             result = result +"\n"+ allLine[pos+1];
         }        
         firstPosOrg = getFirstPos(allLine[pos]);
@@ -157,15 +176,26 @@ public class JavaApplication2 {
             if (tmpStr.trim().equals("")){
                 continue;
             }  
-            if (dataRm.equals("") == false){
-                if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
+            if (radioBtn1.isSelected() == true && radioBtnIN.isSelected() == true){
+                if (dataRm.equals("") == false){
+                    if (i != pos && checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                        continue;
+                    }
+                }   
+                else if (checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(data) == false ){
+                     continue;  
+                }
+                                 
+            }else if(radioBtn2.isSelected() == true && radioBtnOUT.isSelected() == true){
+                if (dataRm.equals("") == false){
+                    if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                        continue;
+                    }
+                }   
+                else if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
                     continue;
                 }
-            }   
-            if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
-                continue;
             }
-
             System.out.println("firstPos "+firstPos);
             System.out.println("firstPosOrg "+firstPosOrg);
             if (firstPos < (firstPosOrg)){
@@ -229,23 +259,22 @@ public class JavaApplication2 {
         //JLabel lablename2=new JLabel("Enter your name");
         TextField tname2=new TextField("");
         //tname.setColumns(100);
-        JRadioButton radioBtn1 = new JRadioButton("EDIFACT");
-        JRadioButton radioBtn2 = new JRadioButton("X12");
+
+        
         radioBtn1.setBounds(50, 60, 170, 30);
         radioBtn2.setBounds(50, 100, 170, 30);
         ButtonGroup group = new ButtonGroup();
         group.add(radioBtn1);
         group.add(radioBtn2);        
-        radioBtn2.setSelected(true);
+        radioBtn1.setSelected(true);
 
-        JRadioButton radioBtnIN = new JRadioButton("IN");
-        JRadioButton radioBtnOUT = new JRadioButton("OUT");
+
         radioBtnIN.setBounds(50, 60, 170, 30);
         radioBtnOUT.setBounds(50, 100, 170, 30); 
         ButtonGroup group2 = new ButtonGroup();
         group2.add(radioBtnIN);
         group2.add(radioBtnOUT);        
-        radioBtnOUT.setSelected(true);
+        radioBtnIN.setSelected(true);
         
 //        ButtonGroup bg = new ButtonGroup();
 //        bg.add(radioBtn1);
@@ -310,7 +339,7 @@ public class JavaApplication2 {
               String result = removeUn(tmpStrBef+"\n"+tmpStrAf);
               result = removeUn(result);
               result = removeUn(result);
-              tname3.setText(result);
+              tname3.setText(result.trim());
            }
         });
         open.addActionListener(new ActionListener() {
