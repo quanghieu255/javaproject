@@ -13,11 +13,13 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
@@ -67,7 +69,7 @@ public class JavaApplication2 {
         }
         return listField;
     }
-    public static boolean checkField(String data){
+    public static boolean checkFieldEDIFACTIN(String data){
         if (data.indexOf("LOOP") >= 0 &&  data.indexOf(":FIELD;") >= 0){
             return true;
         }
@@ -76,7 +78,7 @@ public class JavaApplication2 {
         }
         return false;
     }
-    public static boolean checkFieldX12(String data){
+    public static boolean checkFieldX12OUT(String data){
         if (data.indexOf("ISA") >= 0 &&  data.indexOf(";") >= 0){
             return true;
         }
@@ -88,7 +90,7 @@ public class JavaApplication2 {
         for(i = 0; i < allLine.length; i++){
             pos2 = allLine[i].indexOf(data);
             if (pos2 > 0){
-                System.out.println("Check field "+checkFieldX12(allLine[i]));
+                System.out.println("Check field "+checkFieldX12OUT(allLine[i]));
                 pos = i;
             }
         }
@@ -117,11 +119,11 @@ public class JavaApplication2 {
 //                continue;
 //            }
             if (dataRm.equals("") == false){
-                if (i != pos && checkFieldX12(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
                     continue;
                 }
             }
-            if (i != pos && checkFieldX12(tmpStr) == true && tmpStr.contains(data) == false){
+            if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false){
                 continue;
             }
             else{
@@ -156,11 +158,11 @@ public class JavaApplication2 {
                 continue;
             }  
             if (dataRm.equals("") == false){
-                if (i != pos && checkFieldX12(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
                     continue;
                 }
             }   
-            if (checkFieldX12(tmpStr) == true && tmpStr.contains(data) == false ){
+            if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
                 continue;
             }
 
@@ -227,6 +229,28 @@ public class JavaApplication2 {
         //JLabel lablename2=new JLabel("Enter your name");
         TextField tname2=new TextField("");
         //tname.setColumns(100);
+        JRadioButton radioBtn1 = new JRadioButton("EDIFACT");
+        JRadioButton radioBtn2 = new JRadioButton("X12");
+        radioBtn1.setBounds(50, 60, 170, 30);
+        radioBtn2.setBounds(50, 100, 170, 30);
+        ButtonGroup group = new ButtonGroup();
+        group.add(radioBtn1);
+        group.add(radioBtn2);        
+        radioBtn2.setSelected(true);
+
+        JRadioButton radioBtnIN = new JRadioButton("IN");
+        JRadioButton radioBtnOUT = new JRadioButton("OUT");
+        radioBtnIN.setBounds(50, 60, 170, 30);
+        radioBtnOUT.setBounds(50, 100, 170, 30); 
+        ButtonGroup group2 = new ButtonGroup();
+        group2.add(radioBtnIN);
+        group2.add(radioBtnOUT);        
+        radioBtnOUT.setSelected(true);
+        
+//        ButtonGroup bg = new ButtonGroup();
+//        bg.add(radioBtn1);
+//        bg.add(radioBtn2);
+        
         JLabel lablename2=new JLabel("Enter data to get");
         tname2.setPreferredSize(new Dimension(900,30));        
 
@@ -238,10 +262,14 @@ public class JavaApplication2 {
         //tname.setColumns(100);
         tname3.setPreferredSize(new Dimension(1200,400));
         JScrollPane scroll3 = new JScrollPane(tname3);
-        
+        panel.add(radioBtn1);
+        panel.add(radioBtn2);        
         panel.add(open);
+        panel.add(radioBtnIN);
+        panel.add(radioBtnOUT);      
         panel.add(scroll);
         //panel.add(tname);
+
         panel.add(lablename2);
         panel.add(tname2);
         panel.add(login);
