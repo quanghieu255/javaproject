@@ -213,7 +213,6 @@ public class JavaApplication2 {
 //        JButton create=new JButton();
         open.setPreferredSize(new Dimension(120,30));
         open.setText("Open input file");
-        
 //        JLabel lablename=new JLabel("Enter Input data");
         JTextPane tname=new JTextPane();
         //tname.setColumns(100);
