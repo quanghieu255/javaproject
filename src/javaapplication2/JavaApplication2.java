@@ -89,13 +89,17 @@ public class JavaApplication2 {
     }    
     public static int getPos(String[] allLine, String data){
         int i = 0;
-        int pos = -1,pos2 = -1;
+        int pos = -1,pos2 = -1, pos3 = -1;
+        String dataRm = "";
+        dataRm = rmIndex(data);
         for(i = 0; i < allLine.length; i++){
             pos2 = allLine[i].indexOf(data);
-            if (pos2 > 0){
+            pos3 = allLine[i].indexOf(dataRm);
+            if (pos2 > 0 || pos3 > 0){
                 pos = i;
             }
         }
+        System.out.print("TEST pos "+pos );
         return pos;
     }
      
@@ -105,11 +109,9 @@ public class JavaApplication2 {
         int firstPos;
         String dataRm = "";
         if( data.indexOf("[")> 0){
-            String dataCon = data.substring(data.indexOf("["), data.indexOf("]")+1);
-            dataRm= data.replace(dataCon, "");            
+            dataRm = rmIndex(data);
         }
        
-        List<String> listStr = new ArrayList<String>();
         for(i = pos; i >= 0; i--){
             firstPos = getFirstPos(allLine[i]);
             String tmpStr;
@@ -123,30 +125,24 @@ public class JavaApplication2 {
             
             if (radioBtn1.isSelected() == true && radioBtnIN.isSelected() == true){
                 if (dataRm.equals("") == false){
-                    if (i != pos && checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                    if (i != pos && checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(dataRm) == false && tmpStr.contains(data) == false){
                         continue;
                     }
-                }   
-                else if (checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(data) == false ){
+                }else if (checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(data) == false ){
                      continue;  
-                }else{
-                    result = tmpStr+"\n"+result;
-                    listStr.add(tmpStr);
                 }
-                                 
+                result = tmpStr+"\n"+result;                          
             }else if(radioBtn2.isSelected() == true && radioBtnOUT.isSelected() == true){
                 if (dataRm.equals("") == false){
-                    if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                    if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false && tmpStr.contains(data) == false){
                         continue;
                     }
-                }   
-                else if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
+                }else if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
                     continue;
-                }else{
-                    result = tmpStr+"\n"+result;
-                    listStr.add(tmpStr);
                 }
+                result = tmpStr+"\n"+result;                
             }
+            
             
             if (allLine[i].trim().equals("") == false && firstPos == 0){
                 break;
@@ -158,10 +154,7 @@ public class JavaApplication2 {
         int i=0;
         String result = "";
         String dataRm = "";
-        if(data.indexOf("[")> 0){
-            String dataCon = data.substring(data.indexOf("["), data.indexOf("]")+1);
-            dataRm= data.replace(dataCon, "");            
-        }        
+        dataRm = rmIndex(data);     
         int firstPos, firstPosOrg;
         
         if ((allLine.length > pos+1) && allLine[pos+1] != null &&  allLine[pos+1].contains("endif") == true){
@@ -178,21 +171,21 @@ public class JavaApplication2 {
             }  
             if (radioBtn1.isSelected() == true && radioBtnIN.isSelected() == true){
                 if (dataRm.equals("") == false){
-                    if (i != pos && checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                    if (i != pos && checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(dataRm) == false && tmpStr.contains(data) == false){
                         continue;
                     }
-                }   
-                else if (checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(data) == false ){
+                }else   
+                if (checkFieldEDIFACTIN(tmpStr) == true && tmpStr.contains(data) == false ){
                      continue;  
                 }
                                  
             }else if(radioBtn2.isSelected() == true && radioBtnOUT.isSelected() == true){
                 if (dataRm.equals("") == false){
-                    if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false){
+                    if (i != pos && checkFieldX12OUT(tmpStr) == true && tmpStr.contains(dataRm) == false && tmpStr.contains(data) == false ){
                         continue;
                     }
-                }   
-                else if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
+                }else   
+                if (checkFieldX12OUT(tmpStr) == true && tmpStr.contains(data) == false ){
                     continue;
                 }
             }
@@ -235,6 +228,15 @@ public class JavaApplication2 {
         }
         return result;
     }
+    public static String rmIndex(String data){
+        String tmpStr = data;
+        String dataCon = "";
+        while(tmpStr.indexOf("[")> 0){
+            dataCon = tmpStr.substring(tmpStr.indexOf("["), tmpStr.indexOf("]")+1);
+            tmpStr = tmpStr.replace(dataCon, ""); 
+        }     
+        return tmpStr;
+    }   
     public static void main(String[] args) {
         JFrame frame=new JFrame();
         JPanel panel=new JPanel();
@@ -316,26 +318,7 @@ public class JavaApplication2 {
               //tmpStr = "TEST "+pos;
               tmpStrBef = getStrBef(arrOfStr, pos, tname2.getText());
               tmpStrAf = getStrAf(arrOfStr, pos, tname2.getText());
-//              
-//              for(int i = 0; i<arrOfStr.length; i++){
-//                    
-//                    //String fChar = arrOfStr[i].trim();
-//                    if (arrOfStr[i].trim().equals("")){
-//                        continue;
-//                    }
-//                    
-//                    
-//                    
-//                  //arrOfStr[i].substring(trim(arrOfStr[i]), 0, 1)
-//              }
-                //tmpStr = "TEST _"+ pos;
-//              ArrayList<String> ListField = getListField(arrOfStr);
-//              ListField = getListField(arrOfStr);
-//               String tmpStr;
-//               tmpStr = "";
-//                for(int i = 0; i < ListField.size(); i++){
-//                     tmpStr = tmpStr + ListField.get(i)+"\n";
-//                }         
+        
               String result = removeUn(tmpStrBef+"\n"+tmpStrAf);
               result = removeUn(result);
               result = removeUn(result);
